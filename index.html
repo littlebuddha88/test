@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DT Academy - 컬러풀 & 기하학 도형</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+    /* 기본 스타일 */
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #fff;
+      color: #222;
+      overflow-x: hidden;
+      position: relative;
+    }
+    h1, h2, h3 {
+      margin: 0 0 15px 0;
+    }
+    section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 60px 20px;
+      position: relative;
+      z-index: 10;
+    }
+    /* 텍스트 색 포인트 */
+    .highlight-yellow { color: #f1c40f; }
+    .highlight-blue { color: #2980b9; }
+    .highlight-red { color: #e74c3c; }
+
+    /* 히어로 섹션 */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      background: #fff;
+    }
+    .keywords {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      animation: fadeInUp 1.8s ease forwards;
+      color: #2980b9;
+    }
+    .message {
+      font-weight: 900;
+      font-size: 2.8rem;
+      margin-top: 12px;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .message.active {
+      opacity: 1;
+    }
+
+    /* 소개 */
+    .intro h2 {
+      font-size: 2rem;
+      margin-bottom: 18px;
+      color: #e74c3c;
+    }
+    .intro p {
+      font-size: 1.1rem;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    /* 교육 과정 */
+    .courses {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    /* 과정 카드 배경색 */
+    .card.yellow {
+      background: #fef9e7; /* 연한 노란 */
+      border: 2px solid #f1c40f; /* 진한 노란 테두리 */
+    }
+    .card.blue {
+      background: #eaf2f8; /* 연한 파랑 */
+      border: 2px solid #2980b9; /* 진한 파랑 테두리 */
+    }
+    .card.red {
+      background: #f9ebea; /* 연한 빨강 */
+      border: 2px solid #e74c3c; /* 진한 빨강 테두리 */
+    }
+
+    .card {
+      padding: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+    .card img {
+      border-radius: 12px 12px 0 0;
+      object-fit: cover;
+      width: 100%;
+      height: 160px;
+      display: block;
+    }
+    .card-body {
+      padding: 20px;
+    }
+    .card-body h3 {
+      color: #f1c40f;
+      margin-bottom: 12px;
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+    .card-body p {
+      color: #555;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    /* 문의 폼 */
+    .contact-form {
+      max-width: 600px;
+      background: #f9f9f9;
+      padding: 32px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.07);
+      margin: 0 auto 60px;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1.8px solid #ddd;
+      padding: 14px 18px;
+      font-size: 1rem;
+      margin-bottom: 18px;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+      color: #222;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #2980b9;
+    }
+    .contact-form button {
+      background: #f1c40f;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #222;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .contact-form button:hover {
+      background: #d4ac0d;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      padding: 20px 10px;
+      background: #fafafa;
+      user-select: none;
+    }
+
+    /* 애니메이션 */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 기하학 도형 스타일 */
+    .shape {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.1;
+      transition: opacity 0.6s ease;
+      z-index: 5;
+    }
+    .shape.show {
+      opacity: 0.15;
+    }
+    .circle {
+      border-radius: 50%;
+      background: #f1c40f;
+    }
+    .triangle {
+      width: 0;
+      height: 0;
+      border-left: 22px solid transparent;
+      border-right: 22px solid transparent;
+      border-bottom: 38px solid #e74c3c;
+      background: transparent;
+    }
+    .square {
+      background: #2980b9;
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="keywords highlight-blue">에듀테크 · 디지털전환 · 혁신</div>
+    <div id="messages">
+      <div class="message highlight-yellow">AX 경쟁력 확보</div>
+      <div class="message highlight-blue">AX 인재 양성</div>
+      <div class="message highlight-red">AX 생태계 조성</div>
+    </div>
+  </section>
+
+  <section class="intro">
+    <h2 class="highlight-red">DT Academy 소개</h2>
+    <p>
+      DT Academy는 디지털 전환 시대를 선도할 AX 전문 인재 양성을 목표로 합니다.<br />
+      에듀테크 기반의 혁신 교육 프로그램을 통해 경쟁력 있는 인재를 발굴하고,<br />
+      지속 가능한 AX 생태계 조성에 기여합니다.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="highlight-blue" style="text-align:center;">교육 과정</h2>
+    <div class="courses">
+      <div class="card yellow">
+        <img src="https://images.unsplash.com/photo-1581091215367-d7338b2e3b9f?auto=format&fit=crop&w=400&q=80" alt="AX 리더십 프로그램" />
+        <div class="card-body">
+          <h3>AX 리더십 프로그램</h3>
+          <p>경영진 및 팀 리더를 위한 전략 중심의 AX 교육 과정</p>
+        </div>
+      </div>
+
+      <div class="card blue">
+        <img src="https://images.unsplash.com/photo-1555529669-8a58db51b54d?auto=format&fit=crop&w=400&q=80" alt="에듀테크 실무 과정" />
+        <div class="card-body">
+          <h3>에듀테크 실무 과정</h3>
+          <p>최신 에듀테크 도구 활용 및 실습 중심의 과정</p>
+        </div>
+      </div>
+
+      <div class="card red">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="AX 생태계 프로젝트" />
+        <div class="card-body">
+          <h3>AX 생태계 프로젝트</h3>
+          <p>기업·기관 협업 프로젝트 기반의 실전 프로그램</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="highlight-yellow" style="text-align:center;">문의하기</h2>
+    <div class="contact-form">
+      <input type="text" placeholder="이름" required />
+      <input type="email" placeholder="이메일" required />
+      <textarea rows="5" placeholder="문의 내용" required></textarea>
+      <button type="submit">문의 보내기</button>
+    </div>
+  </section>
+
+  <footer>© 2025 DT Academy. All rights reserved.</footer>
+
+  <!-- 기하학 도형 요소들 -->
+  <div id="shape-container"></div>
+
+  <script>
+    // 메시지 순차 표시
+    const messages = document.querySelectorAll('.message');
+    let index = 0;
+    function showNextMessage() {
+      if (index > 0) messages[index - 1].classList.remove('active');
+      if (index < messages.length) {
+        messages[index].classList.add('active');
+        index++;
+        setTimeout(showNextMessage, 2000);
+      }
+    }
+    setTimeout(showNextMessage, 1500);
+
+    // 기하학 도형 생성 및 애니메이션
+    const shapeContainer = document.getElementById('shape-container');
+    const shapeTypes = ['circle', 'triangle', 'square'];
+    const colors = {
+      circle: '#f1c40f',
+      triangle: '#e74c3c',
+      square: '#2980b9'
+    };
+
+    function createShape() {
+      const shape = document.createElement('div');
+      const type = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
+      shape.classList.add('shape', type);
+      shape.style.backgroundColor = colors[type];
+
+      // 위치, 크기 랜덤
+      const size = Math.random() * 50 + 30;
+      shape.style.width = size + 'px';
+      shape.style.height = type === 'triangle' ? '0' : size + 'px';
+
+      // 삼각형 특성: border 설정 (override bg)
+      if (type === 'triangle') {
+        shape.style.width = '0';
+        shape.style.height = '0';
+        shape.style.borderLeft = size / 2 + 'px solid transparent';
+        shape.style.borderRight = size / 2 + 'px solid transparent';
+        shape.style.borderBottom = (size * 1.2) + 'px solid ' + colors[type];
+        shape.style.backgroundColor = 'transparent';
+      }
+
+      // 화면 내 랜덤 위치 (가로 세로 여유 공간 확보)
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      shape.style.position = 'fixed';
+      shape.style.left = Math.random() * (vw - size) + 'px';
+      shape.style.top = Math.random() * (vh - size) + 'px';
+      shape.style.opacity = 0;
+
+      shapeContainer.appendChild(shape);
+
+      // 페이드 인 / 아웃 애니메이션
+      setTimeout(() => {
+        shape.classList.add('show');
+      }, 50);
+
+      setTimeout(() => {
+        shape.classList.remove('show');
+        setTimeout(() => {
+          shape.remove();
+        }, 700);
+      }, 3500);
+    }
+
+    // 도형 여러 개를 주기적으로 생성
+    setInterval(() => {
+      createShape();
+    }, 1800);
+  </script>
+</body>
+</html>
